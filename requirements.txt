@@ -1,0 +1,5 @@
+boto3>=1.34
+streamlit>=1.40
+pandas>=2.0
+# Optional - only for local testing with --backend duckdb
+duckdb>=1.0
