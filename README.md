@@ -4,7 +4,7 @@ A web app where anyone can ask business questions in plain English about a **12-
 
 The app is hosted on **Amazon EC2** using an IAM role, with no access keys and no SSH.
 
-![Screenshot of the AI Data Analyst web app](web_app.png)
+![Screenshot of the AI Data Analyst web app](Streamlit_app.png)
 
 ## What you see in the app
 
