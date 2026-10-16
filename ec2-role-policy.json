@@ -1,0 +1,61 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RunAthenaQueries",
+      "Effect": "Allow",
+      "Action": [
+        "athena:StartQueryExecution",
+        "athena:GetQueryExecution",
+        "athena:GetQueryResults",
+        "athena:StopQueryExecution"
+      ],
+      "Resource": [
+        "arn:aws:athena:us-east-1:*:workgroup/primary"
+      ]
+    },
+    {
+      "Sid": "ReadTableDefinitions",
+      "Effect": "Allow",
+      "Action": [
+        "glue:GetDatabase",
+        "glue:GetTable",
+        "glue:GetTables",
+        "glue:GetPartitions"
+      ],
+      "Resource": [
+        "arn:aws:glue:us-east-1:*:catalog",
+        "arn:aws:glue:us-east-1:*:database/retail_dw",
+        "arn:aws:glue:us-east-1:*:table/retail_dw/*"
+      ]
+    },
+    {
+      "Sid": "ReadDataWriteResults",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket",
+        "s3:GetBucketLocation",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListMultipartUploadParts",
+        "s3:AbortMultipartUpload"
+      ],
+      "Resource": [
+        "arn:aws:s3:::retail-dw-anu",
+        "arn:aws:s3:::retail-dw-anu/tables/*",
+        "arn:aws:s3:::retail-dw-anu/athena-results/*",
+        "arn:aws:s3:::retail-dw-anu/app/*"
+      ]
+    },
+    {
+      "Sid": "CallOneSmallModel",
+      "Effect": "Allow",
+      "Action": "bedrock:InvokeModel",
+      "Resource": [
+        "arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0",
+        "arn:aws:bedrock:*:*:inference-profile/us.amazon.nova-lite-v1:0"
+      ]
+    }
+  ]
+}
