@@ -8,10 +8,10 @@ The app is hosted on **Amazon EC2** using an IAM role, with no access keys and n
 
 ## What you see in the app
 
-- **Chat box** – type a question or click an example in the sidebar.
-- **Answer + chart** – a short answer with the key numbers, and an automatic bar chart of the result.
-- **"How the agent worked it out"** – every step the agent took: tables inspected, SQL written, results returned, and any failed query it corrected.
-- **Cost per question** – tokens used, data scanned and an estimated cost, plus a running total for the session.
+- **Chat box** - type a question or click an example in the sidebar.
+- **Answer + chart** - a short answer with the key numbers, and an automatic bar chart of the result.
+- **"How the agent worked it out"** - every step the agent took: tables inspected, SQL written, results returned, and any failed query it corrected.
+- **Cost per question** - tokens used, data scanned and an estimated cost, plus a running total for the session.
 
 ## Architecture
 
@@ -32,11 +32,11 @@ The model is given three **tools** through the Bedrock Converse API and chooses 
 
 | Area | Control |
 |---|---|
-| Credentials | EC2 **IAM role** – temporary, auto-rotating credentials; no access keys anywhere |
+| Credentials | EC2 **IAM role** - temporary, auto-rotating credentials; no access keys anywhere |
 | Server access | No key pair and **no SSH port**; administration through AWS Systems Manager Session Manager |
 | Network | Security group allows **only port 8501, only from my IP** |
 | Permissions | **Least privilege**: Athena on one workgroup, read-only access to this dataset, one Bedrock model |
-| Data safety | Agent is **read-only** – only single `SELECT`/`WITH` statements; `DROP`, `INSERT`, `DELETE` etc. are blocked in code |
+| Data safety | Agent is **read-only** - only single `SELECT`/`WITH` statements; `DROP`, `INSERT`, `DELETE` etc. are blocked in code |
 | Cost control | 200-row limit per query, 90-second query timeout, 8-step limit, cost shown per question |
 | Trust | Every answer shows the **SQL used**, so a person can check it rather than trust it blindly |
 | Audit | Each question and tool call is logged to `agent_trace.jsonl` |
@@ -44,7 +44,7 @@ The model is given three **tools** through the Bedrock Converse API and chooses 
 ## Data
 
 12 tables: `orders`, `order_items`, `payments`, `shipments`, `returns`, `customers`, `products`, `categories`, `suppliers`, `promotions`, `stores`, `employees`.
-Source: *Retail Data Warehouse – 12 Table 1M+ Rows Dataset* (Kaggle). The data is synthetic.
+Source: *Retail Data Warehouse - 12 Table 1M+ Rows Dataset* (Kaggle). The data is synthetic.
 
 ## Deployment (us-east-1)
 
@@ -54,13 +54,13 @@ Source: *Retail Data Warehouse – 12 Table 1M+ Rows Dataset* (Kaggle). The data
 
 - In AWS CloudShell, upload `schema.py` and `setup_athena.py`, then run `python3 setup_athena.py --bucket <bucket>`.
 
-**2. App files** – upload `app.py`, `agent.py`, `schema.py` and `requirements.txt` to `s3://<bucket>/app/`.
+**2. App files** - upload `app.py`, `agent.py`, `schema.py` and `requirements.txt` to `s3://<bucket>/app/`.
 
-**3. IAM role** – create a role for EC2 with `AmazonSSMManagedInstanceCore` plus an inline policy from `iam-policy.json` (bucket name filled in, with read access to `app/*` added).
+**3. IAM role** - create a role for EC2 with `AmazonSSMManagedInstanceCore` plus an inline policy from `iam-policy.json` (bucket name filled in, with read access to `app/*` added).
 
-**4. EC2 instance** – Amazon Linux 2023, `t3.micro`, no key pair, the IAM role attached, and a security group allowing TCP 8501 from your IP only.
+**4. EC2 instance** - Amazon Linux 2023, `t3.micro`, no key pair, the IAM role attached, and a security group allowing TCP 8501 from your IP only.
 
-**5. Start the app** – connect with Session Manager and run:
+**5. Start the app** - connect with Session Manager and run:
 
 ```bash
 sudo dnf install -y python3.11 python3.11-pip
